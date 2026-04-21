@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { WelcomeTrigger } from "@/components/auth/WelcomeTrigger";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-white`}
     >
       <body className="min-h-full flex flex-col pt-0 m-0">
+        <WelcomeTrigger />
         <Navbar />
         <main className="flex-1 max-w-[1400px] mx-auto w-full px-4">
           {children}

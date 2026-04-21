@@ -18,12 +18,12 @@ export function welcomeEmailHtml(name?: string) {
     <div style="background:#f0f7ff;border:1px solid #dbeafe;border-radius:12px;padding:24px;margin-bottom:28px;">
       <div style="font-size:15px;font-weight:700;color:#1e40af;margin-bottom:14px;">Here's what you can do right now:</div>
       <table cellpadding="0" cellspacing="0" width="100%">
-        ${[["📄","Upload your resume","Get 10 AI-ranked matches in 90 seconds"],["🎯","See your match %","Know before you apply"],["📝","Get ATS tips","Fix your resume for each specific job"],["💡","See improvement steps","Know exactly what skill to add next"]].map(([icon,title,desc])=>`
+        ${[["📄", "Upload your resume", "Get 10 AI-ranked matches in 90 seconds"], ["🎯", "See your match %", "Know before you apply"], ["📝", "Get ATS tips", "Fix your resume for each specific job"], ["💡", "See improvement steps", "Know exactly what skill to add next"]].map(([icon, title, desc]) => `
         <tr><td width="32" style="padding:6px 0;font-size:18px;vertical-align:top;">${icon}</td><td style="padding:6px 0;vertical-align:top;"><div style="font-size:14px;font-weight:700;color:#111827;">${title}</div><div style="font-size:13px;color:#6b7280;">${desc}</div></td></tr>`).join("")}
       </table>
     </div>
     <div style="text-align:center;margin-bottom:28px;">
-      <a href="https://hirematch.ai" style="display:inline-block;background:#2557a7;color:#fff;font-size:16px;font-weight:700;padding:14px 36px;border-radius:10px;text-decoration:none;">Find My Job Matches →</a>
+      <a href="https://aihirematch.netlify.app" style="display:inline-block;background:#2557a7;color:#fff;font-size:16px;font-weight:700;padding:14px 36px;border-radius:10px;text-decoration:none;">Find My Job Matches →</a>
     </div>
     <div style="background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:16px;margin-bottom:20px;">
       <p style="font-size:13px;color:#92400e;margin:0;"><strong>🔓 Free plan:</strong> 5 uploads/month + 10 matches. Upgrade to <strong>Pro (₹399/month)</strong> for unlimited uploads and full AI insights.</p>
@@ -31,7 +31,7 @@ export function welcomeEmailHtml(name?: string) {
     <p style="color:#6b7280;font-size:13px;margin:0;">Any questions? Reply to this email.<br/><em>The HireMatch AI Team</em></p>
   </td></tr>
   <tr><td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
-    <p style="color:#9ca3af;font-size:12px;margin:0;">© 2026 HireMatch AI · <a href="#" style="color:#9ca3af;">Unsubscribe</a> · <a href="https://hirematch.ai/privacy" style="color:#9ca3af;">Privacy Policy</a></p>
+    <p style="color:#9ca3af;font-size:12px;margin:0;">© 2026 HireMatch AI · <a href="#" style="color:#9ca3af;">Unsubscribe</a> · <a href="https://aihirematch.netlify.app/privacy" style="color:#9ca3af;">Privacy Policy</a></p>
   </td></tr>
 </table>
 </td></tr></table>
@@ -66,7 +66,7 @@ export function dailyAlertEmailHtml(name: string, jobs: any[], keywords: string)
         <div style="font-size:12px;color:#9ca3af;margin-top:2px;">${job.type} &nbsp;·&nbsp; Posted ${job.postedAt}</div>
         <table cellpadding="0" cellspacing="0" style="margin-top:12px;"><tr>
           <td style="padding-right:10px;">
-            <a href="https://hirematch.ai" style="display:inline-block;background:#2557a7;color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;text-decoration:none;">See AI Review</a>
+            <a href="https://aihirematch.netlify.app" style="display:inline-block;background:#2557a7;color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;text-decoration:none;">See AI Review</a>
           </td>
           <td>
             <a href="${job.applyUrl}" style="display:inline-block;border:1px solid #d1d5db;color:#374151;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;text-decoration:none;">Apply Now ↗</a>
@@ -79,7 +79,7 @@ export function dailyAlertEmailHtml(name: string, jobs: any[], keywords: string)
     <div style="background:#f0f7ff;border:1px solid #dbeafe;border-radius:12px;padding:20px;margin-top:18px;text-align:center;">
       <div style="font-size:14px;font-weight:700;color:#1e40af;margin-bottom:6px;">Want to know your exact match score?</div>
       <div style="font-size:13px;color:#3b82f6;margin-bottom:14px;">Upload your resume on HireMatch AI to see match %, ATS tips &amp; how to improve your chances — free or Pro.</div>
-      <a href="https://hirematch.ai" style="display:inline-block;background:#2557a7;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Get My Full AI Analysis →</a>
+      <a href="https://aihirematch.netlify.app" style="display:inline-block;background:#2557a7;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Get My Full AI Analysis →</a>
     </div>
   </td></tr>
   <!-- Footer -->

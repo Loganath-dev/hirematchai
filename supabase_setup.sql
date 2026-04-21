@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   upload_count    INTEGER NOT NULL DEFAULT 0,
   upload_reset_at TIMESTAMPTZ NOT NULL DEFAULT DATE_TRUNC('month', NOW()),
   pro_expires_at  TIMESTAMPTZ,
+  welcome_sent    BOOLEAN NOT NULL DEFAULT FALSE,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
