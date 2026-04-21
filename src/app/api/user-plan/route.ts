@@ -31,7 +31,7 @@ export async function GET(req: Request) {
 
     const { data: profile } = await adminClient
       .from("profiles")
-      .select("is_pro, upload_count, upload_reset_at, pro_expires_at")
+      .select("is_pro, plan_type, created_at, upload_count, upload_reset_at, pro_expires_at")
       .eq("id", user.id)
       .single();
 
@@ -57,14 +57,32 @@ export async function GET(req: Request) {
       uploadCount = 0;
     }
 
-    // Check if pro has expired
-    const isPro = profile.is_pro &&
-      (!profile.pro_expires_at || new Date(profile.pro_expires_at) > now);
+    // Check if pro has expired or if they have a specific plan type
+    const isStandardPro = (profile.plan_type === 'pro') || 
+                          (profile.is_pro && (!profile.pro_expires_at || new Date(profile.pro_expires_at) > now));
+    const isLifetime = profile.plan_type === 'lifetime';
+    
+    // Any Pro or Lifetime user gets the UI features
+    const isPro = isStandardPro || isLifetime;
+
+    let uploadLimit = 5;
+    if (isStandardPro) {
+      uploadLimit = Infinity;
+    } else if (isLifetime) {
+      const createdAt = new Date(profile.created_at);
+      const monthsActive = (now.getFullYear() - createdAt.getFullYear()) * 12 + now.getMonth() - createdAt.getMonth();
+      
+      if (monthsActive < 2) {
+        uploadLimit = 5;
+      } else {
+        uploadLimit = 1;
+      }
+    }
 
     return NextResponse.json({
       isPro,
       uploadCount,
-      uploadLimit: isPro ? Infinity : 5,
+      uploadLimit,
       isLoggedIn: true,
     });
   } catch (err) {

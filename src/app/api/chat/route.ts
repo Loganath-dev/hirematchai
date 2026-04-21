@@ -87,21 +87,28 @@ export async function POST(req: Request) {
         );
         const { data: profile } = await adminClient
           .from("profiles")
-          .select("is_pro, pro_expires_at, ai_tokens_used, ai_tokens_reset_at")
+          .select("is_pro, plan_type, created_at, pro_expires_at, ai_tokens_used, ai_tokens_reset_at")
           .eq("id", userId)
           .single();
 
         if (profile) {
           const now = new Date();
-          isPro = profile.is_pro && (!profile.pro_expires_at || new Date(profile.pro_expires_at) > now);
+          const isStandardPro = (profile.plan_type === 'pro') || (profile.is_pro && (!profile.pro_expires_at || new Date(profile.pro_expires_at) > now));
+          const isLifetime = profile.plan_type === 'lifetime';
+          isPro = isStandardPro || isLifetime;
 
-          // Pro tokens reset daily
-          if (isPro) {
-            const lastReset = new Date(profile.ai_tokens_reset_at);
-            const isNewDay =
+          const lastReset = new Date(profile.ai_tokens_reset_at);
+          const isNewDay =
               now.getDate() !== lastReset.getDate() ||
               now.getMonth() !== lastReset.getMonth() ||
               now.getFullYear() !== lastReset.getFullYear();
+              
+          const isNewMonth = 
+              now.getMonth() !== lastReset.getMonth() ||
+              now.getFullYear() !== lastReset.getFullYear();
+
+          if (isStandardPro) {
+            // Pro tokens reset daily
             if (isNewDay) {
               await adminClient.from("profiles")
                 .update({ ai_tokens_used: 0, ai_tokens_reset_at: now.toISOString() })
@@ -110,11 +117,22 @@ export async function POST(req: Request) {
             } else {
               tokensUsed = profile.ai_tokens_used || 0;
             }
-            tokensExhausted = tokensUsed >= PRO_TOKEN_LIMIT;
+            tokensExhausted = tokensUsed >= PRO_TOKEN_LIMIT; // 10000/day
+          } else if (isLifetime) {
+            // Lifetime tokens reset 10000 monthly
+            if (isNewMonth) {
+              await adminClient.from("profiles")
+                .update({ ai_tokens_used: 0, ai_tokens_reset_at: now.toISOString() })
+                .eq("id", userId);
+              tokensUsed = 0;
+            } else {
+              tokensUsed = profile.ai_tokens_used || 0;
+            }
+            tokensExhausted = tokensUsed >= PRO_TOKEN_LIMIT; // 10000/month
           } else {
             // Free: lifetime limit
             tokensUsed = profile.ai_tokens_used || 0;
-            tokensExhausted = tokensUsed >= FREE_TOKEN_LIMIT;
+            tokensExhausted = tokensUsed >= FREE_TOKEN_LIMIT; // 2000 total
           }
         }
       }

@@ -63,3 +63,14 @@ DROP POLICY IF EXISTS "Public can view jobs_cache" ON public.jobs_cache;
 CREATE POLICY "Public can view jobs_cache"
   ON public.jobs_cache FOR SELECT
   USING (true);
+
+-- ============================================================
+-- Lifetime Pricing Tier Additions
+-- ============================================================
+
+-- 7. Add plan_type to profiles
+ALTER TABLE public.profiles
+ADD COLUMN IF NOT EXISTS plan_type TEXT NOT NULL DEFAULT 'free';
+
+-- Migrate existing pro users
+UPDATE public.profiles SET plan_type = 'pro' WHERE is_pro = true AND plan_type = 'free';
