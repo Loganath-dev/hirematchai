@@ -68,9 +68,11 @@ CREATE POLICY "Public can view jobs_cache"
 -- Lifetime Pricing Tier Additions
 -- ============================================================
 
--- 7. Add plan_type to profiles
+-- 7. Add plan_type and tracking columns to profiles
 ALTER TABLE public.profiles
-ADD COLUMN IF NOT EXISTS plan_type TEXT NOT NULL DEFAULT 'free';
+ADD COLUMN IF NOT EXISTS plan_type TEXT NOT NULL DEFAULT 'free',
+ADD COLUMN IF NOT EXISTS ai_usage_tokens_this_month INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN IF NOT EXISTS ai_usage_reset_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
 
 -- Migrate existing pro users
 UPDATE public.profiles SET plan_type = 'pro' WHERE is_pro = true AND plan_type = 'free';
